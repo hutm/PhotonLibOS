@@ -9,28 +9,28 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
 endif()
 
 # Rapidjson
-FetchContent_Declare(
-    rapidjson
-    GIT_REPOSITORY ${PHOTON_RAPIDJSON_GIT}
-    GIT_TAG v1.1.0
-    PATCH_COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/patches/rapidjson.patch
-    UPDATE_DISCONNECTED 1)
-# Pre-set rapidjson build option, prevent building docs, examples and tests
-set(RAPIDJSON_BUILD_DOC OFF CACHE BOOL "Build rapidjson documentation.")
-set(RAPIDJSON_BUILD_EXAMPLES OFF CACHE BOOL "Build rapidjson documentation.")
-set(RAPIDJSON_BUILD_TESTS OFF CACHE BOOL "Build rapidjson perftests and unittests.")
-FetchContent_MakeAvailable(rapidjson)
-message(STATUS "Rapidjson source dir: ${rapidjson_SOURCE_DIR}")
+#FetchContent_Declare(
+#    rapidjson
+#    GIT_REPOSITORY ${PHOTON_RAPIDJSON_GIT}
+#    GIT_TAG v1.1.0
+#    PATCH_COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/patches/rapidjson.patch
+#    UPDATE_DISCONNECTED 1)
+## Pre-set rapidjson build option, prevent building docs, examples and tests
+#set(RAPIDJSON_BUILD_DOC OFF CACHE BOOL "Build rapidjson documentation.")
+#set(RAPIDJSON_BUILD_EXAMPLES OFF CACHE BOOL "Build rapidjson documentation.")
+#set(RAPIDJSON_BUILD_TESTS OFF CACHE BOOL "Build rapidjson perftests and unittests.")
+#FetchContent_MakeAvailable(rapidjson)
+#message(STATUS "Rapidjson source dir: ${rapidjson_SOURCE_DIR}")
 
 # RapidXml
-FetchContent_Declare(
-    rapidxml
-    URL ${PHOTON_RAPIDXML_SOURCE}
-    URL_HASH
-        SHA256=c3f0b886374981bb20fabcf323d755db4be6dba42064599481da64a85f5b3571
-    UPDATE_DISCONNECTED 1)
-FetchContent_MakeAvailable(rapidxml)
-message(STATUS "Rapidxml source dir: ${rapidxml_SOURCE_DIR}")
+#FetchContent_Declare(
+#    rapidxml
+#    URL ${PHOTON_RAPIDXML_SOURCE}
+#    URL_HASH
+#        SHA256=c3f0b886374981bb20fabcf323d755db4be6dba42064599481da64a85f5b3571
+#    UPDATE_DISCONNECTED 1)
+#FetchContent_MakeAvailable(rapidxml)
+#message(STATUS "Rapidxml source dir: ${rapidxml_SOURCE_DIR}")
 
 # RapidYAML
 # Single header file so should set DOWNLOAD_NO_EXTRACT

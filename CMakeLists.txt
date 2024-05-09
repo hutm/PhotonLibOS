@@ -37,8 +37,8 @@ set(PHOTON_FSTACK_SOURCE "" CACHE STRING "")
 set(PHOTON_E2FS_SOURCE "" CACHE STRING "")
 set(PHOTON_GFLAGS_SOURCE "https://github.com/gflags/gflags/archive/refs/tags/v2.2.2.tar.gz" CACHE STRING "")
 set(PHOTON_GOOGLETEST_SOURCE "https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz" CACHE STRING "")
-set(PHOTON_RAPIDJSON_GIT "https://github.com/Tencent/rapidjson.git" CACHE STRING "")
-set(PHOTON_RAPIDXML_SOURCE "https://sourceforge.net/projects/rapidxml/files/rapidxml/rapidxml%201.13/rapidxml-1.13.zip/download" CACHE STRING "")
+#set(PHOTON_RAPIDJSON_GIT "https://github.com/Tencent/rapidjson.git" CACHE STRING "")
+#set(PHOTON_RAPIDXML_SOURCE "https://sourceforge.net/projects/rapidxml/files/rapidxml/rapidxml%201.13/rapidxml-1.13.zip/download" CACHE STRING "")
 set(PHOTON_RAPIDYAML_SOURCE "https://github.com/biojppm/rapidyaml/releases/download/v0.5.0/rapidyaml-0.5.0.hpp" CACHE STRING "")
 set(PHOTON_CPP_REDIS_SOURCE "https://github.com/cpp-redis/cpp_redis/archive/refs/tags/4.3.1.tar.gz" CACHE STRING "")
 
@@ -120,7 +120,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/output)
 #   lib:        XXX_LIBRARIES
 #   source:     PHOTON_XXX_SOURCE
 
-set(dependencies zlib openssl curl)
+set(dependencies zlib openssl curl RapidJSON)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     LIST(APPEND dependencies aio)
@@ -216,7 +216,7 @@ endif ()
 add_library(photon_obj OBJECT ${PHOTON_SRC})
 target_link_libraries(photon_obj PRIVATE ecosystem_deps)
 target_include_directories(photon_obj PRIVATE include ${OPENSSL_INCLUDE_DIRS} ${AIO_INCLUDE_DIRS}
-        ${ZLIB_INCLUDE_DIRS} ${CURL_INCLUDE_DIRS}
+        ${ZLIB_INCLUDE_DIRS} ${CURL_INCLUDE_DIRS} ${RAPIDXML_INCLUDE_DIRS}
 )
 target_compile_definitions(photon_obj PRIVATE _FILE_OFFSET_BITS=64 FUSE_USE_VERSION=29)
 if (PHOTON_ENABLE_URING)
