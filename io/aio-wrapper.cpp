@@ -213,7 +213,7 @@ retry:
             aio_sigevent.sigev_notify_function = &aio_completion_handler;
             aio_sigevent.sigev_value.sival_ptr = this;
         }
-        static void aio_completion_handler( sigval_t sigval )
+        static void aio_completion_handler( sigval sigval )
         {
             auto req = (struct posix_aiocb*)sigval.sival_ptr;
             req->ioret = aio_return(req);

@@ -86,7 +86,7 @@ inline int posix_memalign(void** memptr, size_t alignment, size_t size) {
                            #name": "
 #endif
 
-static constexpr size_t PAGE_SIZE = 1 << 12;
+static constexpr size_t kPAGE_SIZE = 1 << 12;
 
 namespace photon
 {
@@ -128,7 +128,7 @@ namespace photon
 
     void* default_photon_thread_stack_alloc(void*, size_t stack_size) {
         char* ptr = nullptr;
-        int err = posix_memalign((void**)&ptr, PAGE_SIZE, stack_size);
+        int err = posix_memalign((void**)&ptr, kPAGE_SIZE, stack_size);
         if (unlikely(err))
             LOG_ERROR_RETURN(err, nullptr, "Failed to allocate photon stack! ",
                              ERRNO(err));
@@ -305,8 +305,8 @@ namespace photon
             assert(state == states::DONE);
             // `buf` and `stack_size` will always store on register
             // when calling deallocating.
-            char* protect_head = (char*)align_up((uint64_t)buf, PAGE_SIZE);
-            mprotect(protect_head, PAGE_SIZE, PROT_READ | PROT_WRITE);
+            char* protect_head = (char*)align_up((uint64_t)buf, kPAGE_SIZE);
+            mprotect(protect_head, kPAGE_SIZE, PROT_READ | PROT_WRITE);
             photon_thread_dealloc(buf, stack_size);
         }
     };
@@ -936,16 +936,16 @@ R"(
         if (unlikely(!rq.current))
             LOG_ERROR_RETURN(ENOSYS, nullptr, "Photon not initialized in this vCPU (OS thread)");
         size_t randomizer = (rand() % 32) * (1024 + 8);
-        stack_size = align_up(randomizer + stack_size + sizeof(thread), PAGE_SIZE);
-        stack_size += PAGE_SIZE * 2;  // extra 2 pages for alignment and set guard page
+        stack_size = align_up(randomizer + stack_size + sizeof(thread), kPAGE_SIZE);
+        stack_size += kPAGE_SIZE * 2;  // extra 2 pages for alignment and set guard page
         char* ptr = (char*)photon_thread_alloc(stack_size);
-        char* protect_head = (char*)align_up((uint64_t)ptr, PAGE_SIZE);
-        mprotect(protect_head, PAGE_SIZE, PROT_NONE);
+        char* protect_head = (char*)align_up((uint64_t)ptr, kPAGE_SIZE);
+        mprotect(protect_head, kPAGE_SIZE, PROT_NONE);
         uint64_t p = (uint64_t)ptr + stack_size - sizeof(thread) - randomizer;
         p = align_down(p, 64);
         auto th = new ((char*)p) thread;
         th->buf = ptr;
-        th->stackful_alloc_top = protect_head + PAGE_SIZE;
+        th->stackful_alloc_top = protect_head + kPAGE_SIZE;
         th->start = start;
         th->stack_size = stack_size;
         th->arg = arg;
@@ -1349,7 +1349,7 @@ R"(
             return;
         }
         auto rsp = (char*)th->stack._ptr;
-        auto len = align_down(rsp - buf, PAGE_SIZE);
+        auto len = align_down(rsp - buf, kPAGE_SIZE);
         madvise(buf, len, MADV_DONTNEED);
 #endif
     }
